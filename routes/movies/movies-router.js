@@ -2,13 +2,20 @@ const axios = require("axios");
 const router = require("express").Router();
 
 router.get("/", (req, res) => {
-  checkZip(req);
-  checkDate(req);
+  console.log("wewew", req.query)
+  // checkZip(req);
+
+  // checkDate(req);
+  const date = req.query.startDate;
+  const zip = req.query.zip
+  console.log("wewew", zip, date)
+
   axios
     .get(
       `http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&zip=${zip}&api_key=${process.env.API_KEY}`
     )
     .then(movies => {
+      console.log(movies.data)
       let i = 0;
       imageLoop();
       function imageLoop() {
@@ -39,7 +46,9 @@ router.get("/", (req, res) => {
       }
     })
 
-    .catch(error => res.status(500).json({ message: "error geting Data" }));
+    .catch(error =>{ 
+      // console.log(error)
+      res.status(500).json({ message: "error geting Data" })});
 });
 
 // Movie Details with TMDB API
@@ -88,20 +97,20 @@ const movieById = (id) =>
   axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_APIKEY}&language=en-US`)
 
 
-function checkZip(req) {
-  if (req.query && req.query.zip) return (zip = req.query.zip);
-  else return (zip = "47712");
-}
+// function checkZip(req) {
+//   if (req.query && req.query.zip) return (zip = req.query.zip);
+//   else return (zip = "47712");
+// }
 
-function checkDate(req) {
-  var day = new Date();
-  var dd = String(day.getDate()).padStart(2, "0");
-  var mm = String(day.getMonth() + 1).padStart(2, "0");
-  var yyyy = day.getFullYear();
-  day = yyyy + "-" + mm + "-" + dd;
-  if (req.query && req.query.date) return (date = req.query.date);
-  else return (date = day);
-}
+// function checkDate(req) {
+//   var day = new Date();
+//   var dd = String(day.getDate()).padStart(2, "0");
+//   var mm = String(day.getMonth() + 1).padStart(2, "0");
+//   var yyyy = day.getFullYear();
+//   day = yyyy + "-" + mm + "-" + dd;
+//   if (req.query && req.query.date) return (date = req.query.date);
+//   else return (date = day);
+// }
 
 function Imagedata(title, year) {
   if (title.includes(":"))
