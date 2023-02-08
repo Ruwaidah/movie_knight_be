@@ -6,8 +6,6 @@ const restricted = require("./restricted-middleware.js")
 
 
 router.post("/", (req, res) => {
-    console.log(req.body)
-    console.log(req.query)
     let user;
     let data = req.body[0].location.address
     if (req.query.googleId) {

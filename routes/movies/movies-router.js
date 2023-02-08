@@ -2,20 +2,17 @@ const axios = require("axios");
 const router = require("express").Router();
 
 router.get("/", (req, res) => {
-  console.log("wewew", req.query)
   // checkZip(req);
 
   // checkDate(req);
   const date = req.query.startDate;
   const zip = req.query.zip
-  console.log("wewew", zip, date)
 
   axios
     .get(
       `http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&zip=${zip}&api_key=${process.env.API_KEY}`
     )
     .then(movies => {
-      console.log(movies.data)
       let i = 0;
       imageLoop();
       function imageLoop() {
@@ -47,7 +44,6 @@ router.get("/", (req, res) => {
     })
 
     .catch(error =>{ 
-      // console.log(error)
       res.status(500).json({ message: "error geting Data" })});
 });
 
