@@ -2,9 +2,11 @@ const axios = require("axios");
 const router = require("express").Router();
 // Coming Soon
 router.get("/", (req, res) => {
+    console.log("wefewfwe")
     axios
         .get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.TMDB_APIKEY}&language=en-US&page=1&region=us`)
         .then(response => {
+            console.log("rerfe",response)
             axios
                 .get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.TMDB_APIKEY}&language=en-US&page=2&region=us`)
                 .then(respon => res.status(200).json([response.data.results, respon.data.results]));

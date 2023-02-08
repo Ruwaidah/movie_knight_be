@@ -26,14 +26,11 @@ router.post("/login", (req, res) => {
 
 
 router.get("/:googleId", (req, res) => {
-  console.log(req.params.googleId)
   Consumer.findBy({ googleId: req.params.googleId }, "oauth_consumer")
     .then(user => {
-      console.log(user)
       if (user) {
         Consumer.findBytheater({ user_id: user.googleId })
           .then(theatres => {
-            console.log(theatres)
             res.status(200).json({
               user: {
                 id: user.id,

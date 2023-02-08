@@ -16,7 +16,6 @@ async function updateUser(data, tb, id) {
 
 
 const findBytheater = (data) => {
-    console.log(data)
     return db("favoriteTheatre").where(data).select("id", "theatreId", "theatre", "street", "state", "city", "zip")
 }
 
