@@ -26,11 +26,23 @@ module.exports = {
   },
 
   production: {
-    client: "postgresql",
+    // client: "postgresql",
+    // connection: {
+    //   database: "movie_knight",
+    //   user: "username",
+    //   password: "password",
+    // },
+    client: "pg",
+    // connection: process.env.DATABASE_URL,
     connection: {
-      database: "my_db",
-      user: "username",
-      password: "password",
+      host: process.env.HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_NAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB,
+      schema: 'public',
+      // connection: process.env.DATABASE_URL,
+      ssl: {rejectUnauthorized: false}
     },
     pool: {
       min: 2,
