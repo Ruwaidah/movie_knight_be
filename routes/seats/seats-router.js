@@ -2,7 +2,6 @@ const router = require("express").Router();
 const Seats = require("./seats-model.js");
 
 router.get("/", (req, res) => {
-  console.log("seats");
   Seats.getAll()
     .then((seats) => {
       res.status(200).json(seats)})
