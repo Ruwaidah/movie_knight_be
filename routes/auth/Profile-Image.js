@@ -43,7 +43,7 @@ router.post("/", (req, res) => {
                 .catch(error => res.status(500).json({ message: "error update image" }))
 
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log("error"))
 });
 
 
