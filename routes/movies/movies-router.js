@@ -14,48 +14,19 @@ router.get("/", async (req, res) => {
       `http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&zip=${zip}&api_key=${process.env.API_KEY}`
     )
     .then((movies) => {
-      // const allMovies = await movies.data.map((movie) => {
-      //   return { ...movie, [isActive]: false };
-      // });
-      // res.status(200).json(movies.data);
-    const allMovies =   movies.data.map((movie) => {
-        movie.isActive = false;
-        Imagedata(movie.title, movie.releaseYear)
-          .then((image) => {
-            if (!image.data.Poster || image.data.Poster == "N/A") {
-              movie.image =
-                "https://res.cloudinary.com/donsjzduw/image/upload/v1580504817/hfjrl5wbkiugy4y0gmqu.jpg";
-            } else {
-              (movie.image = image.data.Poster),
-                (movie.maturityRating = image.data.Ratings);
-            }
-            allmymovies.push(movie);
-            console.log(allmymovies)
-          })
-          .catch((error) =>
-            res.status(500).json({ message: "error geting Data" })
-          );
-        // console.log("data", data);
-
-        // .then((res1) => {
-        //   if (!res1.data.Poster || res1.data.Poster == "N/A") {
-        //     movie.image =
-        //       "https://res.cloudinary.com/donsjzduw/image/upload/v1580504817/hfjrl5wbkiugy4y0gmqu.jpg";
-        //   } else {
-        //     movie.image = res1.data.Poster;
-        //     movie.maturityRating = res1.data.Ratings;
-        //   }
-        // })
-        // .catch((error) =>
-        //   res.status(500).json({ message: "error geting Data" })
-        // );
-        // return movie;
-        // console.log("fhdfhdf", movie);
-      });
-      console.log("all,",allMovies)
-      console.log("my",allmymovies);
-      // res.status(200).json(allmymovies);
-      // console.log(allmymovies)
+      const allMovies = movies.data.map(
+        (movie) =>
+          // console.log(movie)
+          // const uri = movie.preferredImage.uri;
+          {
+            return { ...movie, ["isActive"]: false };
+          }
+        // movie
+        // movie.image = `http://developer.tmsimg.com/${uri}/&api_key=${process.env.API_KEY}`;
+        // console.log(movie);
+      );
+      console.log("all,", allMovies);
+      res.status(200).json(allMovies);
     })
     .catch((error) => {
       res.status(500).json({ message: "error geting Data" });
