@@ -13,13 +13,14 @@ router.get("/", async (req, res) => {
     .get(
       `http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&zip=${zip}&api_key=${process.env.API_KEY}`
     )
-    .then((movies) =>
-      // const allMovies = movies.data.map(
-      // (movie) =>({ ...movie, ["isActive"]: false }));
-      res.status(200).json(movies)
-    )
+    .then((movies) => {
+      const allMovies = movies.data.map((movie) => ({
+        ...movie,
+        ["isActive"]: false,
+      }));
+      res.status(200).json(allMovies);
+    })
     .catch((error) => {
-      console.log(error)
       res.status(500).json({ message: "error geting Data" });
     });
 });
