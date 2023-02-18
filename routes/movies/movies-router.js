@@ -24,9 +24,11 @@ router.get("/", async (req, res) => {
             } else {
               movie.image = response.data.Poster;
             }
-            if (index === length - 1) {
-              res.status(200).json(movies.data);
-            }
+            setTimeout(() => {
+              if (index === length - 1) {
+                res.status(200).json(movies.data);
+              }
+            }, 100);
           })
           .catch((err) => console.log("errororrs"));
       });
@@ -84,10 +86,10 @@ const movieById = (id) =>
     `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_APIKEY}`
   );
 
-async function getingImag(title, year) {
+function getingImag(title, year) {
   if (title.includes(":")) title = title.split(":")[0];
   else if (title.includes("(")) title = title.split("(")[0];
-  return await axios.get(
+  return axios.get(
     `http://www.omdbapi.com/?t=${title}&y=${year}&apikey=${process.env.OM_API_KEY}`
   );
 }
