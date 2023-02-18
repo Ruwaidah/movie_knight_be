@@ -16,10 +16,10 @@ router.get("/", async (req, res) => {
     .then((movies) => {
       // res.status(200).json(movies.data)
       const length = movies.data.length;
-      console.log(length)
-      movies.data.map((movie, index) => {
+      console.log(length);
+      movies.data.map(async (movie, index) => {
         // console.log(movie);
-        getingImag(movie.title, movie.releaseYear)
+        await getingImag(movie.title, movie.releaseYear)
           .then((response) => {
             // console.log("movie", movie.title,response.data)
             if (!response.data.Poster || response.data.Poster == "N/A") {
