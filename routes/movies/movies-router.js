@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { response } = require("express");
 const router = require("express").Router();
 
 router.get("/", async (req, res) => {
@@ -7,13 +8,66 @@ router.get("/", async (req, res) => {
   // checkDate(req);
   const date = req.query.startDate;
   const zip = req.query.zip;
-  let allmymovies = [];
 
   axios
     .get(
       `http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&zip=${zip}&api_key=${process.env.API_KEY}`
     )
-    .then((movies) => res.status(200).json(movies.data))
+    .then((movies) => {
+      // res.status(200).json(movies.data)
+      const length = movies.data.length;
+      console.log(length)
+      movies.data.map((movie, index) => {
+        // console.log(movie);
+        getingImag(movie.title, movie.releaseYear)
+          .then((response) => {
+            // console.log("movie", movie.title,response.data)
+            if (!response.data.Poster || response.data.Poster == "N/A") {
+              // console.log("none", movie)
+              movie.image =
+                "https://res.cloudinary.com/donsjzduw/image/upload/v1580504817/hfjrl5wbkiugy4y0gmqu.jpg";
+            } else {
+              movie.image = response.data.Poster;
+            }
+            // console.log(length, index);
+            if (index === length - 1) {
+              // console.log(length, index, movies.data);
+              res.status(200).json(movies.data);
+            }
+
+            // console.log(movie)
+          })
+          .catch((err) => console.log("errororrs"));
+      });
+      // imageLoop();
+      // function imageLoop() {
+      //   // set timeout on each request beacuse some images were getting skipped and not showing
+      //   setTimeout(() => {
+      //     Imagedata(movies.data[i].title, movies.data[i].releaseYear)
+      //       .then((res1) => {
+      //         if (movies.data[i].title == "Las píldoras de mi novio")
+      //           movies.data[i].image =
+      //             "https://res.cloudinary.com/donsjzduw/image/upload/v1582262868/aty1hylgyzimcdbomgmc.jpg";
+      //         else if (!res1.data.Poster || res1.data.Poster == "N/A") {
+      //           movies.data[i].image =
+      //             "https://res.cloudinary.com/donsjzduw/image/upload/v1580504817/hfjrl5wbkiugy4y0gmqu.jpg";
+      //         } else {
+      //           movies.data[i].image = res1.data.Poster;
+      //           movies.data[i].maturityRating = res1.data.Ratings;
+      //         }
+      //         if (i == movies.data.length - 1) {
+      //           res.status(200).json(movies.data);
+      //         } else {
+      //           i++;
+      //           imageLoop();
+      //         }
+      //       })
+      //       .catch((error) =>
+      //         res.status(500).json({ message: "error geting Data" })
+      //       );
+      //   }, 1);
+      // }
+    })
     .catch((error) => {
       console.log(error);
       res.status(500).json({ message: "error geting Data" });
@@ -89,12 +143,9 @@ const movieById = (id) =>
 //   else return (date = day);
 // }
 
-async function Imagedata(title, year) {
+async function getingImag(title, year) {
   if (title.includes(":")) title = title.split(":")[0];
   else if (title.includes("(")) title = title.split("(")[0];
-  // else if (title == "The Gentlemen") year = 2019;
-  // else if (title == "Las píldoras de mi novio")
-  // title = "Las pildoras de mi novio";
   return await axios.get(
     `http://www.omdbapi.com/?t=${title}&y=${year}&apikey=${process.env.OM_API_KEY}`
   );
