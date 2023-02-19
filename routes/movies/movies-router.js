@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
 
   axios
     .get(
-      `http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&zip=${zip}&api_key=${process.env.API_KEY}`
+      `http://data.tmsapi.com/v1.1/movies/showings?startDate=${date}&numDays=6&zip=${zip}&api_key=${process.env.API_KEY}`
     )
     .then((movies) => {
       const length = movies.data.length;
