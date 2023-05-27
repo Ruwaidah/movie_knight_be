@@ -19,6 +19,7 @@ router.get("/", async (req, res) => {
         return await getingImag(movie.title, movie.releaseYear)
           .then((response) => {
             if (!response.data.Poster || response.data.Poster == "N/A") {
+              console.log("undefi", response.data.Poster);
               movie.image =
                 "https://res.cloudinary.com/donsjzduw/image/upload/v1580504817/hfjrl5wbkiugy4y0gmqu.jpg";
             } else {
@@ -43,7 +44,6 @@ router.get("/moviedetails/:movieId", (req, res) => {
   let title = req.params.movieId;
   if (title.includes(":")) title = title.split(":")[0];
   if (title.includes("(")) title = title.split("(")[0];
-  console.log(title);
   axios
     .get(
       `https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_APIKEY}&query=${title}`
